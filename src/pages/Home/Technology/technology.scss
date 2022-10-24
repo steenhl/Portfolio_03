@@ -1,0 +1,16 @@
+.panel:last-child .technology ul {
+	max-width: 350px;
+}
+
+.technology {
+	&--ul {
+		padding-left: 20px;
+	}
+	&--li {
+		font-size: 18px;
+		font-weight: bolder;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+}

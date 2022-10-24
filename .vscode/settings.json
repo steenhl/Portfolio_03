@@ -1,0 +1,6 @@
+{
+    "prettier.printWidth": 120,
+    "prettier.proseWrap": "always",
+    "reactSnippets.settings.prettierEnabled": false,
+    "prettier.tabWidth": 1
+}

@@ -1,0 +1,41 @@
+#teaser-gallery {
+	position: relative;
+	figure {
+		position: absolute;
+		top: 0;
+		left: 0;
+		visibility: hidden;
+		// z-index: 1;
+		img {
+			display: block;
+			width: 100%;
+		}
+	}
+	// figure:nth-of-type(4) {
+	// 	z-index: 1;
+	// }
+	// figure:nth-of-type(3) {
+	// 	z-index: 2;
+	// }
+	// figure:nth-of-type(2) {
+	// 	z-index: 3;
+	// }
+	figure:nth-of-type(1) {
+		z-index: 4;
+		visibility: visible;
+	}
+}
+// .home-wrapper .panel .panel-wrapper-level3 .panel-wrapper-level4
+.home-wrapper .panel-4 {
+	background-color: black;
+	.panel-wrapper-level3 {
+		.panel-wrapper-level4 {
+			width: 40%;
+			flex-direction: column;
+		}
+	}
+	.svg-figure {
+		width: 60%;
+		padding-top: 30px;
+	}
+}
