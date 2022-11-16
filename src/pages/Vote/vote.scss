@@ -71,6 +71,7 @@ ul {
 			}
 		}
 	}
+	// .vote-main .likes .likes__header-wrapper section h2
 	.vote-main .likes {
 		&__header-wrapper,
 		&__form-wrapper {
@@ -86,7 +87,7 @@ ul {
 				font-size: 56px;
 				color: #149d2a;
 				font-weight: bold;
-				margin-top: 61px;
+				margin-top: 21px;
 				margin-bottom: 0;
 			}
 			p {
@@ -369,6 +370,11 @@ ul {
 		.vote-main .likes__form-wrapper__section-name__wrapper {
 			height: 100px;
 			width: 80%;
+		}
+	}
+	@media only screen and (max-width: 500px) {
+		.vote-main .likes .likes__header-wrapper section h2 {
+			margin-top: 0;
 		}
 	}
 }

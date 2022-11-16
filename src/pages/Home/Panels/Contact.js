@@ -5,16 +5,16 @@ export const Contact = ({ children, sectionData, renderTechnologyList, renderIco
 		<section className={sectionData.class + " panel panel-link panel-wrapper-level2"} id={sectionData.id}>
 			{sectionData.svgBackGround && renderSvgBackground(sectionData.svgBackGround)}
 
-			{sectionData.header && <h2 className="header-level1"> {sectionData.header}</h2>}
+			{sectionData.header && <h2 className="header-level1 panel--header"> {sectionData.header}</h2>}
 			<div className="panel-wrapper-level3">
 				{/* left side  */}
-				{sectionData.svg && <div className="svg-figure">{sectionData.svg && renderIcon(sectionData.svg)}</div>}
+				<figure className="portrait">
+					<img src={require("../../../img/steen/potræt.jpg")} alt="steen hjalmar larsen" />
+				</figure>
 				{/* right side  */}
 				<div className="panel-wrapper-level4 explanation">
-					{/* all pages header */}
-					{sectionData.subheading && <h3 className="header-level2">{sectionData.subheading}</h3>}
-					{/* Paragraf text */}
-					{sectionData.p && <p>{sectionData.p}</p>}
+					{/* Header */}
+					{sectionData.subheading && <h3 className="header-level2 explanation--header">{sectionData.subheading}</h3>}
 					{/* {list of used tech} */}
 					{sectionData.list && renderTechnologyList(sectionData)}
 					{/* Link  */}
@@ -22,6 +22,7 @@ export const Contact = ({ children, sectionData, renderTechnologyList, renderIco
 					{/* only on contact page  */}
 					{sectionData.eMail && (
 						<div className="link-to">
+							<h3>Kontakt</h3>
 							Email:
 							<a className="btn btn-primary" href={sectionData.eMail}>
 								{sectionData.eMailAdress}

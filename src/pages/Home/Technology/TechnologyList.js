@@ -62,17 +62,17 @@ export const TechnologyList = ({ Technology, play }) => {
 
 	return (
 		<section className="technology">
-			<h2 className="header-level2">{Technology.header && Technology.header}</h2>
+			<h2 className="header-level2 technology--header">{Technology.header && Technology.header}</h2>
 			<ul ref={ul} className="technology--ul">
 				{Technology.items.map &&
 					Technology.items.map((listItem, i) => {
 						// toolTip has header
 						if (listItem.toolTipHeader !== undefined && listItem.popup !== undefined) {
 							return (
-								<li key={listItem.id} className="technology--li">
+								<li key={listItem.id} className="technology--li has-tooltip">
 									{listItem.text}
 									<span className="tooltip-span">
-										<PopoverToolTip headerText={listItem.toolTipHeader} bodyText={listItem.popup} buttonText="i" />
+										<PopoverToolTip headerText={listItem.toolTipHeader} bodyText={listItem.popup} buttonText="i"></PopoverToolTip>
 									</span>
 								</li>
 							);

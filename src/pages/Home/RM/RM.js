@@ -22,7 +22,7 @@ export const RM = ({ children, RmPlay }) => {
 		}
 	}, [RmPlay, timeline]);
 
-	const tl_eye_right_propil = React.useRef();
+	// const tl_eye_right_propil = React.useRef();
 	// svg eye blink on hover
 	let [isShown, setIsShown] = React.useState(false);
 	// left eye blink

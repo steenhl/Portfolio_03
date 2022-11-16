@@ -1,8 +1,3 @@
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-}
 body {
 	overflow-x: hidden;
 }
@@ -38,12 +33,24 @@ body {
 			li:first-child {
 				color: white;
 			}
+			li {
+				padding-top: 5px;
+				padding-bottom: 5px;
+			}
 			a {
 				display: block;
 				text-decoration: none;
 				color: black;
 				transition: 0.5s;
-				span {
+				.internal-nav__span-circle {
+					display: block;
+					width: 16px;
+					height: 16px;
+					border-radius: 50%;
+					background-color: currentColor;
+				}
+
+				.internal-nav__span-text {
 					display: none;
 				}
 
@@ -63,16 +70,21 @@ body {
 			}
 		}
 	}
+
 	.panel {
 		color: rgb(188, 188, 188);
 		height: 100vh;
 		position: sticky;
 		top: 0;
 		color: white;
-		padding-left: 20px;
-		padding-right: 20px;
+		padding-left: 40px;
+		padding-right: 40px;
 		width: 100%;
 		overflow: hidden;
+
+		.info-wrapper {
+			color: black;
+		}
 
 		.link-to.btn.btn-primary {
 			background-color: #22344d;
@@ -82,6 +94,7 @@ body {
 		}
 		.panel-wrapper-level3 {
 			display: flex;
+			justify-content: center;
 			.panel-wrapper-level4 {
 				margin-top: 20px;
 				padding-left: 40px;
@@ -93,7 +106,6 @@ body {
 		}
 		.svg-figure {
 			width: 40%;
-			// max-width: 350px;
 			padding-left: 30px;
 			margin-left: auto;
 			margin-right: auto;
@@ -112,9 +124,8 @@ body {
 			padding-top: 40px;
 			padding-left: 60px;
 
-			color: #ffa450;
-
 			.article-inner-wrapper {
+				color: #ffa450;
 				display: flex;
 				flex-direction: column;
 
@@ -195,6 +206,16 @@ body {
 			font-size: 16px;
 		}
 	}
+	.panel:last-child {
+		.portrait {
+			width: 40%;
+			padding-left: 10px;
+			img {
+				display: block;
+				width: 100%;
+			}
+		}
+	}
 
 	.panel:not(.panel-1) h3.header-level2 {
 		font-size: 35px;
@@ -247,12 +268,15 @@ body {
 			h3.header-level1 {
 				font-size: 25px;
 			}
+			.svg-figure {
+				padding-left: 35px;
+			}
 		}
 		.panel:not(.panel-1) {
 			padding-left: 10px;
 			padding-right: 10px;
 			.explanation {
-				h3 {
+				&--header {
 					display: none;
 				}
 			}
@@ -270,6 +294,14 @@ body {
 		}
 		.panel:last-child {
 			padding-left: 40px;
+			.panel--header {
+				display: none;
+			}
+			.portrait,
+			.explanation {
+				padding-top: 30px;
+				margin-top: 0px;
+			}
 		}
 	}
 }

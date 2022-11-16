@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import _ from "underscore";
 import data from "./data";
 import SwiperMasonryGallery from "./SwiperMasonryGallery";
+import "../pages.scss";
 
 const Gallery = () => {
 	const [changeGallery, setChangeGallery] = useState();
@@ -31,7 +32,7 @@ const Gallery = () => {
 	return (
 		<div id="main-wrapper">
 			<header className="header-level-1">
-				<h1>Gadekunst i Berlin</h1>
+				<h1 className="global-paddin-top">Gadekunst i Berlin</h1>
 			</header>
 			<SwiperMasonryGallery
 				galleryData={data.galleryStreetArtTheWallData}
@@ -42,6 +43,17 @@ const Gallery = () => {
 				galleryStreetArtText={data.galleryStreetArtText}
 				galleryClassName="gallery"
 				galleryId="swiper-masonry-01"
+			></SwiperMasonryGallery>
+
+			<SwiperMasonryGallery
+				galleryData={data.galleryStreetArtBerlin}
+				swiperSetup={data.swiperSetup}
+				masonrySetup={data.masonrySetup}
+				changeGallery={changeGallery}
+				galleryNames={data.galleryNames}
+				galleryStreetArtText={data.galleryStreetArtBerlinText}
+				galleryClassName="gallery"
+				galleryId="swiper-masonry-02"
 			></SwiperMasonryGallery>
 		</div>
 	);

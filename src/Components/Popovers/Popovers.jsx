@@ -5,19 +5,25 @@ import Tooltip from "react-bootstrap/Tooltip";
 import parse from "html-react-parser";
 
 // <PopoverToolTip headerText={} bodyText={} buttonText={} />
-export const PopoverToolTip = ({ headerText, bodyText, buttonText }) => {
+export const PopoverToolTip = (props) => {
+	const { headerText, bodyText, buttonText } = props;
+	//console.log(props.children);
+
 	const popover = (
 		<Popover id="popover-basic">
 			<Popover.Header as="h3">{parse(headerText)}</Popover.Header>
-			<Popover.Body>{bodyText}</Popover.Body>
+			<Popover.Body>{parse(bodyText)}</Popover.Body>
 		</Popover>
 	);
 
 	return (
 		<OverlayTrigger trigger="click" placement="auto" overlay={popover} rootClose>
-			<Button variant="secondary" className="px-2 py-0">
-				{buttonText}
-			</Button>
+			<div>
+				{props.children}
+				<Button variant="secondary" className="px-2 py-0">
+					{buttonText}
+				</Button>
+			</div>
 		</OverlayTrigger>
 	);
 };

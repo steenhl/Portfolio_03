@@ -3,6 +3,7 @@ import "../../fonts/fontFace.css";
 import SVG from "react-inlinesvg";
 import data from "./data.json";
 import { useState, useRef } from "react";
+import "../pages.scss";
 
 import "./vote.scss";
 
@@ -134,7 +135,7 @@ export default function Vote(props) {
 						mainText.map((main) => (
 							<div className="likes__header-wrapper" key={main._id}>
 								<section>
-									<h2>{main.mainHeader}</h2>
+									<h2 className="global-paddin-top">{main.mainHeader} </h2>
 									<p>{main.mainPragraf}</p>
 								</section>
 							</div>

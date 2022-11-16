@@ -12,5 +12,10 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		&.has-tooltip {
+			border-bottom: 1px solid var(--bs-gray-400);
+			padding-top: 3px;
+			padding-bottom: 6px;
+		}
 	}
 }

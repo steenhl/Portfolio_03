@@ -1,5 +1,33 @@
 body {
 	font-family: "Roboto", Arial, Helvetica, sans-serif;
+	&.lock-scroll-bars {
+		overflow: hidden;
+		height: 100vh;
+		.home-wrapper nav.internal-nav.front-page {
+			z-index: -1;
+		}
+		.main-nav.navbar {
+			display: none;
+		}
+		#root,
+		#main-wrapper,
+		#main,
+		.home-wrapper,
+		.home-article-panel-wrapper {
+			overflow: hidden;
+			height: 100vh;
+		}
+	}
+}
+.changePage.fadeOut {
+	background-color: antiquewhite;
+	position: "absolute";
+	width: "100vw";
+	height: "100vh";
+	opacity: 1;
+	figure {
+		//position: relative !important;
+	}
 }
 h1 {
 	font-family: "Roboto", Arial, Helvetica, sans-serif;
@@ -17,22 +45,9 @@ h1 {
 }
 #main-wrapper {
 	position: relative;
-	// .main-wrapper {
-	// 	display: flex;
-	// 	flex-wrap: wrap;
-	// 	justify-content: center;
-	// }
 }
 
 #main-header {
-	// .offcanvas,
-	// .offcanvas-lg,
-	// .offcanvas-md,
-	// .offcanvas-sm,
-	// .offcanvas-xl,
-	// .offcanvas-xxl {
-	// 	--bs-offcanvas-width: 200px;
-	// }
 	position: absolute;
 	z-index: 10;
 	top: 0;
@@ -40,6 +55,7 @@ h1 {
 
 	.main-nav {
 		position: fixed;
+		top: 0;
 		right: 0;
 		border-bottom-left-radius: 5px;
 		background-color: rgb(229 240 249);

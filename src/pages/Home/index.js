@@ -1,4 +1,7 @@
-import React, { useRef, useEffect, useState } from "react";
+import "./main.scss";
+import "./infobuttons.scss";
+
+import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -16,11 +19,13 @@ import { TechnologyList } from "./Technology/TechnologyList";
 import { Panel } from "./Panels/Panel";
 import { Contact } from "./Panels/Contact";
 import { Gallery02 } from "./Gallery/Gallery02";
-import { Fireworks } from "fireworks-js";
-import "./main.scss";
+import { InforSLider } from "../../Components/InforSlider/InforSlider";
+import { FireworksModel } from "../../Components/Firework/Fireworks";
+import { FireworkStopAfter } from "../../Components/Firework/FireworkStopAfter";
+
+// import uaParser from "ua-parser-js";
 
 export default function Home(props) {
-	// registerPlugin
 	gsap.registerPlugin(ScrollTrigger);
 	gsap.registerPlugin(ScrollToPlugin);
 	//
@@ -28,89 +33,45 @@ export default function Home(props) {
 
 	// fireworks
 	let fireworksRef = useRef(null);
-	const [fireworksObj, setFireworksObj] = useState();
-	const [fireworksTl, setFireworksTl] = useState();
-	let startFireworks = useRef(false);
-	useEffect(() => {
-		setFireworksTl(gsap.timeline({}));
-	}, []);
+	let fireworkHasStopped = useRef(true);
+	const [thisFirework, setThisFirework] = useState();
 
 	useEffect(() => {
-		const container = fireworksRef.current;
-		if (fireworksObj === undefined) {
-			let f = new Fireworks(container, {
-				autoresize: true,
-				opacity: 0.3,
-				acceleration: 1,
-				friction: 0.97,
-				gravity: 1.5,
-				particles: 50,
-				trace: 3,
-				traceSpeed: 10,
-				explosion: 5,
-				intensity: 8,
-				flickering: 20,
-				lineStyle: "round",
-				hue: { min: 0, max: 220 },
-				delay: { min: 15, max: 30 },
-				rocketsPoint: { min: 50, max: 50 },
-				lineWidth: {
-					explosion: { min: 1, max: 3 },
-					trace: { min: 1, max: 2 },
-				},
-				brightness: { min: 50, max: 80 },
-				decay: { min: 0.015, max: 0.03 },
-				mouse: { click: true, move: false, max: 2 },
-			});
-			setFireworksObj(f);
-		}
-	}, [fireworksObj]);
-	useEffect(() => {
-		if (fireworksObj !== undefined) {
-			fireworksObj.canvas.id = "canvas-fireworks";
-		}
-	}, [fireworksObj]);
+		// let parser = new uaParser();
+		//console.log(parser);
+		// console.log(parser.getResult());
+		// console.log(parser.getDevice());
+		// console.log(parser.getDevice().vendor);
+		// console.log(parser.getDevice().type);
+		//console.log(parser.getBrowser());
+	});
+
+	// fireworks
+	FireworksModel(fireworksRef, setThisFirework, thisFirework, 6000, fireworkHasStopped);
+
 	// start fireworks on click
 	useEffect(() => {
-		if (startFireworks.current === false && fireworksTl) {
-			fireworksObj.start();
-			startFireworks.current = true;
-			setTimeout(() => {
-				startFireworks.current = false;
-				// DOM Canvas
-				let canvas = fireworksObj.canvas;
-				fireworksTl.to(canvas, {
-					opacity: 0,
-					duration: 0.5,
-					onComplete: () => {
-						//
-						fireworksObj.stop();
-						fireworksTl.to(canvas, {
-							opacity: 1,
-							duration: 0.1,
-						});
-					},
-				});
-			}, 7000);
+		if (thisClick) {
+			thisFirework.start();
+			FireworkStopAfter(thisFirework, 7000, fireworkHasStopped);
 		}
-	}, [thisClick, fireworksTl, fireworksObj]);
+	}, [thisClick, thisFirework]);
 
 	document.querySelector("body").classList.add("black");
 
 	// ref
-	const refPanelWrapper = useRef(null);
+	const refPanelWrapper = useRef();
 	const navInt = useRef(null);
 	let scrollTween = useRef(null);
-	//
 
 	let panel01Header = useRef(null);
-
 	// Set document title;
 	useEffect(() => {
 		document.title = props.title;
 	}, [props.title]);
-
 	// intenal navigation
+	const [scrollTrigger, setScrollTrigger] = useState();
+
 	useEffect(() => {
 		const internalNav = navInt.current;
 		const panelWrapper = refPanelWrapper.current;
@@ -143,9 +104,9 @@ export default function Home(props) {
 				}
 			});
 		};
-
 		let s1 = ScrollTrigger.create({
 			start: 0,
+			trigger: panels,
 			end: "max",
 			snap: {
 				snapTo: 1 / (panels.length - 1),
@@ -158,12 +119,14 @@ export default function Home(props) {
 				panelIsActive(e);
 			},
 		});
+		setScrollTrigger(s1);
 
 		// cleanup function will be called when component is removed
 		return () => {
 			s1.kill();
 		};
 	}, []);
+
 	const setActiveLink = (link, links) => {
 		const duration = 0.2;
 		links.forEach((el) => {
@@ -219,9 +182,14 @@ export default function Home(props) {
 			return <Gallery02 play={galleryPlay} data={galleryData} delayTime="4" fadeTime="1" />;
 		}
 	}
+	const [activePanel, setActivePanel] = useState();
+	let activePanelTest = useRef();
 
 	// Find the active panel
 	const activeAnimationPanel = (activePanel) => {
+		setActivePanel(activePanel);
+		activePanelTest.current = activePanel;
+		//console.log(activePanel);
 		// Panel-1: nightLandscape
 		if (activePanel.id === "panel-1") {
 			setpanel1Play(true);
@@ -285,17 +253,8 @@ export default function Home(props) {
 							return (
 								<li key={link.id}>
 									<a href={link.linkHref} onClick={(e) => goToLink(e, index)}>
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											width="16"
-											height="16"
-											fill="currentColor"
-											className="bi bi-circle-fill"
-											viewBox="0 0 16 16"
-										>
-											<circle cx="8" cy="8" r="8" />
-										</svg>
-										<span>{link.linkText}</span>
+										<span className="internal-nav__span-circle"></span>
+										<span className="internal-nav__span-text">{link.linkText}</span>
 									</a>
 								</li>
 							);
@@ -324,7 +283,27 @@ export default function Home(props) {
 											</header>
 											{sectionData.p && <p>{sectionData.p}</p>}
 										</div>
+										<InforSLider scrollTrigger={scrollTrigger} activePanel={activePanel} thisFirework={thisFirework}>
+											<h2>Animation</h2>
+											<p>
+												<strong>Animation, video og bevægelse</strong> er nogen af de stærkeste virkemidler vi kan bruge i et
+												kommunikationsflow og et vigtigt værktøj i enhver markedsføring.
+											</p>
+											<p>
+												<strong>På forsiden</strong> har jeg udforsket Animations frameworket GSAP, som stort set kan animere alt.
+											</p>
+											<p>
+												<strong>Siden er opdel i en række sectioner,</strong> som hver især formidler en stemning gennem grafik og
+												animation.
+											</p>
+											<p>
+												<strong>Nogen af sectionerne har link</strong> til projekter som jeg har skabt gennem tiden og der kommer
+												løbende flere til
+											</p>
+											<TechnologyList Technology={sectionData.list} play={true} />
+										</InforSLider>
 									</article>
+
 									<div className="panel-wrapper-level3">
 										{sectionData.svg && <div className="svg-figure">{sectionData.svg && renderIcon(sectionData.svg)}</div>}
 									</div>

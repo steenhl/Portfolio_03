@@ -1,10 +1,13 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Swiper from "swiper"; // https://swiperjs.com/
 import Masonry from "masonry-layout"; // https://masonry.desandro.com/
 import imagesLoaded from "imagesloaded"; // https://imagesloaded.desandro.com/
 import underscore from "underscore";
 import { useState } from "react";
+import gsap from "gsap";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import "./main.scss";
+import parse from "html-react-parser";
 // Import Swiper styles
 import "swiper/css/bundle";
 
@@ -18,6 +21,7 @@ const SwiperMasonryGallery = ({
 	galleryClassName,
 	galleryId,
 }) => {
+	gsap.registerPlugin(ScrollToPlugin);
 	const el = useRef();
 	const swiperRef = useRef();
 	const swiperWrapperRef = useRef();
@@ -42,19 +46,48 @@ const SwiperMasonryGallery = ({
 	let imgRationRef = useRef(undefined);
 	let fullScreenWrapperMaxWidthRef = useRef(undefined);
 	let fullScreenGalleryRef = useRef(false);
+	let galleryWrapperRef = useRef(false);
 
 	// state
 	let [imagesIsLoaded, setImagesIsLoaded] = useState(false);
 	let [thisSwiperDom, setThisSwiperDom] = useState(undefined);
+	let [fontObserverDaysOne, setFontObserverDaysOne] = useState(false);
+	let [fontObserverRobotoMedium, setFontObserverRobotoMedium] = useState(false);
 	// toggle full screen Gallery
-	let [thisFullScreenGallery, setThisFullScreenGallery] = useState();
-	//thisFullScreenGallery
-	const toggleFullScreenGallery = (c, e, index) =>
-		setThisFullScreenGallery({
+	let [thisFullScreenGalleryState, setThisFullScreenGalleryState] = useState();
+
+	// click event object
+	const toggleFullScreenGallery = (c, e, index, el) =>
+		setThisFullScreenGalleryState({
 			galleriIsActive: c || false,
 			clickEvent: e || undefined,
 			index: index || 0,
+			galleryWrapper: el || undefined,
 		});
+
+	useEffect(() => {
+		let FontFaceObserver = require("fontfaceobserver");
+		let fontDaysOne = new FontFaceObserver("Days One");
+		let fontRobotoMedium = new FontFaceObserver("Roboto-Medium");
+
+		fontDaysOne
+			.load()
+			.then(function () {
+				setFontObserverDaysOne(true);
+			})
+			.catch(function () {
+				setFontObserverDaysOne(false);
+			});
+
+		fontRobotoMedium
+			.load()
+			.then(function () {
+				setFontObserverRobotoMedium(true);
+			})
+			.catch(function () {
+				setFontObserverRobotoMedium(false);
+			});
+	}, []);
 
 	useEffect(() => {
 		imagesLoaded(".swiper", function () {
@@ -159,7 +192,7 @@ const SwiperMasonryGallery = ({
 				fullScreenWrapperMaxWidthRef.current = window.innerHeight * imgRationRef.current;
 				// full screen gallery
 
-				if (thisFullScreenGallery.galleriIsActive) {
+				if (thisFullScreenGalleryState.galleriIsActive) {
 					// if (fullScreenGalleryRef.current) {
 					swiperRef.current.style.maxWidth = fullScreenWrapperMaxWidthRef.current + "px";
 				} else {
@@ -168,7 +201,9 @@ const SwiperMasonryGallery = ({
 			};
 
 			const createFullScreen = () => {
-				if (thisFullScreenGallery.galleriIsActive) {
+				if (thisFullScreenGalleryState.galleriIsActive) {
+					// find closest galley wrapper
+					galleryWrapperRef.current = thisFullScreenGalleryState.clickEvent.target.closest(".gallery-wrapper");
 					const body = document.querySelector("body");
 					let fullScreenTarget = swiperRef.current;
 
@@ -177,8 +212,8 @@ const SwiperMasonryGallery = ({
 					destroyMasonry();
 					createSwiper();
 					// swiper scroll to active slide
-					swiperObj.current.slideTo(thisFullScreenGallery.index, 300);
-					window.scrollTo(0, 0);
+					swiperObj.current.slideTo(thisFullScreenGalleryState.index, 300);
+
 					body.classList.add("locked");
 					fullScreenTarget.classList.add("full-screen");
 					// create ovelay
@@ -193,10 +228,17 @@ const SwiperMasonryGallery = ({
 
 						fullScreenTarget.querySelectorAll(".swiper-pagination").forEach((sp) => sp.classList.add("hide"));
 					}
+					setTimeout(() => {
+						gsap.to(window, { duration: 0.3, scrollTo: 0 });
+					}, 310);
 				}
 			};
 			const destroyFullScreen = () => {
-				if (thisFullScreenGallery) {
+				// only react when user click and close fullScreen gallery
+				if (
+					thisFullScreenGalleryState.clickEvent !== undefined &&
+					thisFullScreenGalleryState.galleryWrapper !== undefined
+				) {
 					const body = document.querySelector("body");
 					let fullScreenTarget = swiperRef.current;
 
@@ -206,16 +248,27 @@ const SwiperMasonryGallery = ({
 					document.querySelectorAll("#overlay").forEach((o) => o.remove());
 					fullScreenTarget.classList.remove("full-screen");
 					fullScreenTarget.querySelectorAll(".swiper-pagination").forEach((sp) => sp.classList.remove("hide"));
+					let id = "#" + thisFullScreenGalleryState.galleryWrapper.current.id;
+
+					if (galleryWrapperRef.current !== undefined) {
+						gsap.to(window, { duration: 0.3, scrollTo: id });
+						// reset state
+						setThisFullScreenGalleryState({
+							galleriIsActive: false,
+							clickEvent: undefined,
+							index: 0,
+							galleryWrapper: undefined,
+						});
+					}
 				}
 			};
-
 			// shift between galleries
 			const whichGallery = () => {
 				// 1. this.changeGallery from props -> change value in parent
 				// 2. this.galleryNames. ,,, from props -> value set in parent
-				// thisFullScreenGallery.galleriIsActive
+				// thisFullScreenGalleryState.galleriIsActive
 				if (changeGallery === galleryNames.swiperGallery) {
-					if (thisFullScreenGallery.galleriIsActive === true) {
+					if (thisFullScreenGalleryState.galleriIsActive === true) {
 						createSwiper();
 						destroyMasonry();
 						createFullScreen();
@@ -225,13 +278,17 @@ const SwiperMasonryGallery = ({
 						destroyMasonry();
 					}
 				} else if (changeGallery === galleryNames.masonryGallery) {
-					if (thisFullScreenGallery.galleriIsActive === true) {
+					if (thisFullScreenGalleryState.galleriIsActive === true) {
 						createFullScreen();
 						destroyMasonry();
 					} else {
+						// console.log("createMasonry");
 						destroyFullScreen();
 						destroySwiper();
-						createMasonry();
+						// Wait for font to be loaded
+						if (fontObserverDaysOne && fontObserverRobotoMedium) {
+							createMasonry();
+						}
 					}
 				}
 			};
@@ -252,14 +309,16 @@ const SwiperMasonryGallery = ({
 		masonryObj,
 		masonrySetup,
 		swiperSetup,
-		thisFullScreenGallery,
+		thisFullScreenGalleryState,
+		fontObserverDaysOne,
+		fontObserverRobotoMedium,
 	]);
 
 	return (
-		<section className={galleryClassName} id={galleryId} ref={el}>
-			<header className="header-level-2">
-				<h2>{galleryStreetArtText.header}</h2>
-				<h3>{galleryStreetArtText.subHeader}</h3>
+		<section className={` ${galleryClassName} gallery-section`} id={galleryId} ref={el}>
+			<header className="header-level-2 gallery-section__header">
+				<h2>{parse(galleryStreetArtText.header)}</h2>
+				<h3>{parse(galleryStreetArtText.subHeader)}</h3>
 			</header>
 			<div className="swiper grid full-screen-target" ref={swiperRef}>
 				{/* .grid-sizer empty element, only used for element sizing
@@ -274,14 +333,14 @@ const SwiperMasonryGallery = ({
 									className="swiper-slide grid-item"
 									onClick={(e) => {
 										isClicked.current = !isClicked.current;
-										toggleFullScreenGallery(isClicked.current, e, index);
+										toggleFullScreenGallery(isClicked.current, e, index, el);
 										e.preventDefault();
 									}}
 								>
-									<img src={data.src} alt={data.header} />
+									<img src={require("../../" + data.src + ".jpg")} alt={data.header} />
 									<figcaption>
-										<h2>{data.header}</h2>
-										<p>{data.paragraf}</p>
+										<h2>{parse(data.header)}</h2>
+										<p>{parse(data.paragraf)}</p>
 									</figcaption>
 								</figure>
 							);

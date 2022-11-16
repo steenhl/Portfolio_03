@@ -37,39 +37,80 @@ const ListItem = ({ results }) => {
 				<tbody className="accordion-item">
 					{results.map((r, index) => (
 						<React.Fragment key={r.id}>
-							<tr className="show-header">
-								<td colSpan={7}>
-									<table className="table">
-										<tbody>
-											<tr className="accordion-header according-tr" id={"heading" + r.id}>
-												<td className="small-width">
-													<button
-														className="accordion-button collapsed"
-														type="button"
-														data-bs-toggle="collapse"
-														data-bs-target={"#collapse" + r.id}
-														aria-expanded="false"
-														aria-controls={"collapse" + r.id}
-													></button>
-												</td>
-												<td>{r.name}</td>
-												<td className="small-width">{r.gender}</td>
-												<td className="small-width">{r.status}</td>
-												<td className="small-width">{r.species}</td>
-												<td>{r.location.name}</td>
-												<td>{r.episode.length}</td>
-											</tr>
-										</tbody>
-									</table>
-								</td>
-							</tr>
-							<tr className="show-more">
-								<td colSpan={7}>
-									<div id={"collapse" + r.id} className="accordion-collapse collapse hide" aria-labelledby={"heading" + r.id}>
-										<ShowCharacter character={r}>{/* {console.log()} */}</ShowCharacter>
-									</div>
-								</td>
-							</tr>
+							{index === 0 && (
+								<>
+									<tr className="show-header">
+										<td colSpan={7}>
+											<table className="table">
+												<tbody>
+													<tr className="accordion-header according-tr" id={"heading" + r.id}>
+														<td className="small-width">
+															<button
+																className="accordion-button collapsed"
+																type="button"
+																data-bs-toggle="collapse"
+																data-bs-target={"#collapse" + r.id}
+																aria-expanded="false"
+																aria-controls={"collapse" + r.id}
+															></button>
+														</td>
+														<td>{r.name}</td>
+														<td className="small-width">{r.gender}</td>
+														<td className="small-width">{r.status}</td>
+														<td className="small-width">{r.species}</td>
+														<td>{r.location.name}</td>
+														<td>{r.episode.length}</td>
+													</tr>
+												</tbody>
+											</table>
+										</td>
+									</tr>
+									<tr className="show-more">
+										<td colSpan={7}>
+											<div id={"collapse" + r.id} className="accordion-collapse collapse" aria-labelledby={"heading" + r.id}>
+												<ShowCharacter character={r}>{/* {console.log()} */}</ShowCharacter>
+											</div>
+										</td>
+									</tr>
+								</>
+							)}
+							{index > 0 && (
+								<>
+									<tr className="show-header">
+										<td colSpan={7}>
+											<table className="table">
+												<tbody>
+													<tr className="accordion-header according-tr" id={"heading" + r.id}>
+														<td className="small-width">
+															<button
+																className="accordion-button collapsed"
+																type="button"
+																data-bs-toggle="collapse"
+																data-bs-target={"#collapse" + r.id}
+																aria-expanded="false"
+																aria-controls={"collapse" + r.id}
+															></button>
+														</td>
+														<td>{r.name}</td>
+														<td className="small-width">{r.gender}</td>
+														<td className="small-width">{r.status}</td>
+														<td className="small-width">{r.species}</td>
+														<td>{r.location.name}</td>
+														<td>{r.episode.length}</td>
+													</tr>
+												</tbody>
+											</table>
+										</td>
+									</tr>
+									<tr className="show-more">
+										<td colSpan={7}>
+											<div id={"collapse" + r.id} className="accordion-collapse collapse hide" aria-labelledby={"heading" + r.id}>
+												<ShowCharacter character={r}>{/* {console.log()} */}</ShowCharacter>
+											</div>
+										</td>
+									</tr>
+								</>
+							)}
 						</React.Fragment>
 					))}
 				</tbody>
