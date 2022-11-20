@@ -15,14 +15,15 @@ import { MainNavigation } from "./Navigation/MainNavigation";
 import ReactDOM from "react-dom";
 import { library } from "@fortawesome/fontawesome-svg-core";
 
-import { fab } from "@fortawesome/free-brands-svg-icons";
-import { faApple } from "@fortawesome/free-brands-svg-icons";
+// import { fab } from "@fortawesome/free-brands-svg-icons";
+// import { faApple } from "@fortawesome/free-brands-svg-icons";
 
-import { faCheckSquare, faCoffee } from "@fortawesome/free-solid-svg-icons";
-import { faComment, faSnowflake } from "@fortawesome/free-regular-svg-icons";
+// import { faCheckSquare, faCoffee } from "@fortawesome/free-solid-svg-icons";
+// import { faComment, faSnowflake } from "@fortawesome/free-regular-svg-icons";
 
 // library.add(faCheckSquare, faCoffee, faComment, faSnowflake);
-library.add(fab, faApple, faCheckSquare, faCoffee, faComment, faSnowflake);
+// library.add(fab, faApple, faCheckSquare, faCoffee, faComment, faSnowflake);
+// library.add(faCheckSquare, faCoffee, faComment, faSnowflake);
 
 export default function App() {
 	//which page is active

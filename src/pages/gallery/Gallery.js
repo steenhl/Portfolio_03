@@ -1,33 +1,20 @@
-import React, { useEffect, useState } from "react";
-import _ from "underscore";
+import { useEffect, useState } from "react";
 import data from "./data";
 import SwiperMasonryGallery from "./SwiperMasonryGallery";
+import { useResizeScreenWidth } from "../../Hooks/Resize/useResizeScreenWidth";
 import "../pages.scss";
 
 const Gallery = () => {
+	// changeGallery:string -> the name of the gallery
 	const [changeGallery, setChangeGallery] = useState();
-
-	const windowResize = () => {
-		let maxWidth = window.matchMedia("(max-width: 900px)").matches;
-		// Enable swiper gallery, disabale masonry gallery
-		if (maxWidth) {
-			setChangeGallery(data.galleryNames.swiperGallery);
-		}
-		// Disabale swiper gallery, Enable masonry gallery
-		else {
-			setChangeGallery(data.galleryNames.masonryGallery);
-		}
-	};
+	// hasMaxWidth: boolian
+	const [hasMaxWidth, setHasMaxWidth] = useState(false);
+	// delayTime:number, maxWidth:number, setHasMaxWidth: setState->fun
+	useResizeScreenWidth({ delayTime: 300, maxWidth: 800, setHasMaxWidth });
 	useEffect(() => {
-		windowResize();
-	}, []);
-	useEffect(() => {
-		const delayResize = () => {
-			let lazyLayout = _.debounce(windowResize, 300);
-			window.addEventListener("resize", lazyLayout);
-		};
-		delayResize();
-	}, []);
+		// change gallery
+		hasMaxWidth ? setChangeGallery(data.galleryNames.swiperGallery) : setChangeGallery(data.galleryNames.masonryGallery);
+	}, [hasMaxWidth]);
 
 	return (
 		<div id="main-wrapper">

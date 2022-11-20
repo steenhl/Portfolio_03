@@ -1,0 +1,15 @@
+.svg-wrapper {
+	position: fixed;
+	max-width: 400px;
+	left: 50%;
+	top: 50vh;
+	// transform: translate(-50%, -50%);
+	z-index: 10;
+	> div {
+		transform: translate(-50%, -50%);
+	}
+	svg.injected-svg {
+		background-color: aqua;
+	}
+	// transform: translate(-50vw, -50vh);
+}

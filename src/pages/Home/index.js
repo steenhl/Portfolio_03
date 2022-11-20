@@ -113,7 +113,7 @@ export default function Home(props) {
 				// or "labels" or function or Array
 				duration: 0.5,
 				directional: true,
-				ease: "power3",
+				// ease: "power3",
 			},
 			onUpdate: (e) => {
 				panelIsActive(e);

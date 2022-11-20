@@ -179,7 +179,6 @@ const SwiperMasonryGallery = ({
 				swiperButtonPrevDOM.classList.remove(swiperButtonPrev);
 				swiperButtonNextDOM.classList.remove(swiperButtonNext);
 			};
-
 			const destroyMasonry = () => {
 				if (masonryObj.current) {
 					masonryObj.current.destroy();
@@ -199,7 +198,6 @@ const SwiperMasonryGallery = ({
 					swiperRef.current.style.maxWidth = "";
 				}
 			};
-
 			const createFullScreen = () => {
 				if (thisFullScreenGalleryState.galleriIsActive) {
 					// find closest galley wrapper
